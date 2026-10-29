@@ -10,6 +10,8 @@ int CPU::execute(uint8_t op) {
     uint8_t p = y >> 1;
     uint8_t q = y & 1;
 
+    uint16_t addr;
+
     switch (op) {
         // NOP
         case 0x00:
@@ -33,6 +35,24 @@ int CPU::execute(uint8_t op) {
     }
 
     if (x == 0) {
+        if (z == 2) {
+            // Indirect loading
+            if (p < 2) {
+                // BC or DE
+                addr = r16(p);
+            }
+            else {
+                // HL
+                addr = r16(2);
+                set_r16(2, p==2 ? addr+1 : addr-1);
+            }
+
+            if (q == 0) bus.write(addr, A);
+            else A = bus.read(addr);
+
+            return 8;
+        }
+
         // LD r8, n8
         if (z == 6) {
             set_r8(y, fetch8());
