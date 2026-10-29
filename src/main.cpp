@@ -26,7 +26,9 @@ int main(int argc, char* argv[]) {
     Bus bus(cartridge);
     CPU cpu(bus);
     cpu.reset();
+    FILE* log = fopen("doctor.log", "w");
     while (true) {
+        cpu.log_state(log);
         cpu.step();
     }
 

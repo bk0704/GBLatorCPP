@@ -2,6 +2,7 @@
 #ifndef GBLATORCPP_CPU_H
 #define GBLATORCPP_CPU_H
 #include <cstdint>
+#include <cstdio>
 #include "../bus.h"
 
 
@@ -17,6 +18,7 @@ public:
     uint64_t cycles_total{};
 
     static constexpr uint8_t FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10;
+    void log_state(FILE* out);
 
 private:
     Bus& bus;
