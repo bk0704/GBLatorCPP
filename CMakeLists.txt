@@ -9,4 +9,5 @@ add_executable(GBLatorCPP src/main.cpp
         src/bus.cpp
         src/bus.h
         src/CPU/cpu.cpp
-        src/CPU/cpu.h)
+        src/CPU/cpu.h
+        src/CPU/opcodes.cpp)
