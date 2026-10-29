@@ -12,6 +12,7 @@ int CPU::execute(uint8_t op) {
     uint8_t q = y & 1;
 
     uint16_t addr;
+    uint8_t offset = fetch8();
 
     switch (op) {
         // NOP
@@ -36,6 +37,16 @@ int CPU::execute(uint8_t op) {
     }
 
     if (x == 0) {
+        if (z == 0) {
+            if (y >= 3) {
+                // JR
+                if (y == 3 || cond(y-4)) {
+                    PC += offset;
+                    return 12;
+                }
+                return 8;
+            }
+        }
         if (z == 1) {
             if (q == 0) {
                 // LD rp[p], d16

@@ -53,6 +53,8 @@ private:
 
     int execute(uint8_t op);
     int execute_cb(uint8_t op);
+
+    bool cond(int i);
 };
 
 

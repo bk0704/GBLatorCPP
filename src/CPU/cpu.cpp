@@ -184,5 +184,18 @@ void CPU::trace_state(FILE *out) {
         BC(), DE(), HL(), SP);
 }
 
+bool CPU::cond(int i) {
+    switch (i) {
+        case 0: return !flag(FLAG_Z);
+        case 1: return flag(FLAG_Z);
+        case 2: return !flag(FLAG_C);
+        case 3: return flag(FLAG_C);
+        default:
+            cerr << "cond bad index " << i << "\n";
+            abort();
+    }
+}
+
+
 
 
