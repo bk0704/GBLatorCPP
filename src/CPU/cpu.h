@@ -7,7 +7,7 @@
 
 class CPU {
 public:
-    explicit CPU(Bus& bus) : bus(bus) {};
+    explicit CPU(Bus& bus) : bus(bus) {}
     void reset();
     int step();
 
@@ -31,11 +31,11 @@ private:
 
     uint16_t AF() const { return (A << 8) | F;}
     uint16_t BC() const { return (B << 8) | C;}
-    uint16_t DE() const { return (D << 8) | D;}
+    uint16_t DE() const { return (D << 8) | E;}
     uint16_t HL() const { return (H << 8) | L;}
     void setAF(uint16_t v) { A = v >> 8; F = v & 0xF0; }
     void setBC(uint16_t v) { B = v >> 8; C = v & 0xFF; }
-    void setDE(uint16_t v) { D = v >> 8; D = v & 0xFF; }
+    void setDE(uint16_t v) { D = v >> 8; E = v & 0xFF; }
     void setHL(uint16_t v) { H = v >> 8; L = v & 0xFF; }
 
     bool flag(uint8_t m) const {return F & m; }
@@ -45,6 +45,8 @@ private:
     void set_r8(int i, uint8_t v);
     uint16_t r16(int i);
     void set_r16(int i, uint16_t v);
+    uint16_t r16stk(int i);
+    void set_r16stk(int i, uint16_t v);
 
     int execute(uint8_t op);
     int execute_cb(uint8_t op);
