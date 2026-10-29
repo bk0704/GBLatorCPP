@@ -32,6 +32,13 @@ int CPU::execute(uint8_t op) {
             return 4;
     }
 
+    if (x == 0) {
+        // LD r8, n8
+        if (z == 6) {
+            set_r8(y, fetch8());
+            return (y == 6) ? 12 : 8;
+        }
+    }
     // LD r, r'
     if (x == 1) {
         set_r8(y, r8(z));
