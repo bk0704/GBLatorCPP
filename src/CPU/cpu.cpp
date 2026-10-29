@@ -137,9 +137,14 @@ void CPU::set_r16stk(int i, uint16_t v) {
 }
 
 int CPU::step() {
+    bool enableAfter = ei_pending;
+    ei_pending = false;
+
     uint8_t op = fetch8();
     int cycles = execute(op);
     cycles_total += cycles;
+
+    if (enableAfter) IME = true;
     return cycles;
 }
 
