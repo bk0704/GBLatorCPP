@@ -69,7 +69,77 @@ void CPU::set_r8(int i, uint8_t v) {
         default:
             cerr << "r8: bad index " << i << "\n";
             abort();
-
     }
+}
+
+uint16_t CPU::r16(int i) {
+    switch (i) {
+        case 0: return BC();
+        case 1: return DE();
+        case 2: return HL();
+        case 3: return SP;
+        default:
+            cerr << "r16: bad index " << i << "\n";
+            abort();
+    }
+}
+
+void CPU::set_r16(int i, uint16_t v) {
+    switch (i) {
+        case 0:
+            setBC(v);
+            break;
+        case 1:
+            setDE(v);
+            break;
+        case 2:
+            setHL(v);
+            break;
+        case 3:
+            SP = v;
+            break;
+        default:
+            cerr << "r16: bad index " << i << "\n";
+            abort();
+    }
+}
+
+uint16_t CPU::r16stk(int i) {
+    switch (i) {
+        case 0: return BC();
+        case 1: return DE();
+        case 2: return HL();
+        case 3: return AF();
+        default:
+            cerr << "r16stk: bad index " << i << "\n";
+            abort();
+    }
+}
+
+void CPU::set_r16stk(int i, uint16_t v) {
+    switch (i) {
+        case 0:
+            setBC(v);
+            break;
+        case 1:
+            setDE(v);
+            break;
+        case 2:
+            setHL(v);
+            break;
+        case 3:
+            setAF(v);
+            break;
+        default:
+            cerr << "r16stk: bad index " << i << "\n";
+            abort();
+    }
+}
+
+int CPU::step() {
+    uint8_t op = fetch8();
+    int cycles = execute(op);
+    cycles_total += cycles;
+    return cycles;
 }
 
