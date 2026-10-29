@@ -7,6 +7,9 @@ int CPU::execute(uint8_t op) {
     uint8_t y = (op >> 3) & 7;
     uint8_t z = op & 7;
 
+    uint8_t p = y >> 1;
+    uint8_t q = y & 1;
+
     switch (op) {
         // NOP
         case 0x00:
@@ -27,6 +30,12 @@ int CPU::execute(uint8_t op) {
         case 0x76:
             halted = true;
             return 4;
+    }
+
+    // LD r, r'
+    if (x == 1) {
+        set_r8(y, r8(z));
+        return 4;
     }
 
 
