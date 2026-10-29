@@ -7,4 +7,6 @@ add_executable(GBLatorCPP src/main.cpp
         src/cartridge.cpp
         src/cartridge.h
         src/bus.cpp
-        src/bus.h)
+        src/bus.h
+        src/CPU/cpu.cpp
+        src/CPU/cpu.h)
