@@ -1,6 +1,9 @@
 
 #include "cpu.h"
 
+#include <iostream>
+
+using namespace std;
 void CPU::reset() {
     A = 0x01;
     F = 0xB0;
@@ -19,5 +22,20 @@ void CPU::reset() {
     ei_pending = false;
 
     cycles_total = 0;
+}
 
+uint8_t CPU::r8(int i) {
+    switch (i) {
+        case 0: return B;
+        case 1: return C;
+        case 2: return D;
+        case 3: return E;
+        case 4: return H;
+        case 5: return L;
+        case 6: return bus.read(HL());
+        case 7: return A;
+        default:
+            cerr << "r8: bad index " << i << "\n";
+            abort();
+    }
 }
