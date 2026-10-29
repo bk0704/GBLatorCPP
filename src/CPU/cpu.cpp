@@ -137,6 +137,16 @@ void CPU::set_r16stk(int i, uint16_t v) {
 }
 
 int CPU::step() {
+    if (halted) {
+        uint8_t pending = bus.read(0xFFFF) & bus.read(0xFF0F) & 0x1F;
+        if (pending) {
+            halted = false;
+        }
+        else {
+            cycles_total += 4;
+            return 4;
+        }
+    }
     bool enableAfter = ei_pending;
     ei_pending = false;
 

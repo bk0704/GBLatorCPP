@@ -23,6 +23,10 @@ int CPU::execute(uint8_t op) {
         case 0xFB:
             ei_pending = true;
             return 4;
+        // HALT
+        case 0x76:
+            halted = true;
+            return 4;
     }
 
 
