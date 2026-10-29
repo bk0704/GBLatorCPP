@@ -39,3 +39,37 @@ uint8_t CPU::r8(int i) {
             abort();
     }
 }
+
+void CPU::set_r8(int i, uint8_t v) {
+    switch (i) {
+        case 0:
+            B = v;
+            break;
+        case 1:
+            C = v;
+            break;
+        case 2:
+            D = v;
+            break;
+        case 3:
+            E = v;
+            break;
+        case 4:
+            H = v;
+            break;
+        case 5:
+            L = v;
+            break;
+        case 6:
+            bus.write(HL(), v);
+            break;
+        case 7:
+            A = v;
+            break;
+        default:
+            cerr << "r8: bad index " << i << "\n";
+            abort();
+
+    }
+}
+
