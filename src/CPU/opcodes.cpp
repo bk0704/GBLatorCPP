@@ -1,4 +1,5 @@
 #include "cpu.h"
+#include "disasm.h"
 #include <iostream>
 
 using namespace std;
@@ -35,6 +36,13 @@ int CPU::execute(uint8_t op) {
     }
 
     if (x == 0) {
+        if (z == 1) {
+            if (q == 0) {
+                // LD rp[p], d16
+                set_r16(p, fetch16());
+                return 12;
+            }
+        }
         if (z == 2) {
             // Indirect loading
             if (p < 2) {
@@ -66,6 +74,9 @@ int CPU::execute(uint8_t op) {
     }
 
 
-    cerr << "Unimplemented opcode 0x" << hex << int(op) << " at 0x" << (PC - 1) << "\n";
-    abort();
+    int length;
+    cerr << "Unimplemented opcode 0x" << hex << int(op) << " (" << disasm(bus, PC - 1, length)
+         << ") at 0x" << (PC - 1) << "\n";
+    // exit() rather than abort() so the log files get flushed
+    exit(1);
 }

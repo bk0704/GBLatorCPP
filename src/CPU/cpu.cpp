@@ -1,5 +1,6 @@
 
 #include "cpu.h"
+#include "disasm.h"
 
 #include <iostream>
 
@@ -163,6 +164,24 @@ void CPU::log_state(FILE *out) {
         "A:%02X F:%02X B:%02X C:%02X D:%02X E:%02X H:%02X L:%02X SP:%04X PC:%04X PCMEM:%02X,%02X,%02X,%02X\n",
         A, F, B, C, D, E, H, L, SP, PC,
         bus.read(PC), bus.read(PC + 1), bus.read(PC + 2), bus.read(PC + 3));
+}
+
+void CPU::trace_state(FILE *out) {
+    int length;
+    string text = disasm(bus, PC, length);
+
+    // Raw bytes, padded so the mnemonics line up
+    char bytes[12] = "";
+    for (int i = 0; i < length; i++) {
+        snprintf(bytes + i * 3, 4, "%02X ", bus.read(PC + i));
+    }
+
+    fprintf(out,
+        "%04X  %-9s %-16s A:%02X F:%c%c%c%c BC:%04X DE:%04X HL:%04X SP:%04X\n",
+        PC, bytes, text.c_str(), A,
+        flag(FLAG_Z) ? 'Z' : '-', flag(FLAG_N) ? 'N' : '-',
+        flag(FLAG_H) ? 'H' : '-', flag(FLAG_C) ? 'C' : '-',
+        BC(), DE(), HL(), SP);
 }
 
 
