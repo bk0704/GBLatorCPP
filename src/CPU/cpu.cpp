@@ -163,7 +163,6 @@ int CPU::execute(uint8_t op) {
         case 0xFB:
             ei_pending = true;
             return 4;
-        case 0xCB: return 4 + execute_cb(fetch8());
     }
 
     cerr << "Unimplemented opcode 0x" << hex << int(op) << " at 0x" << (PC - 1) << "\n";

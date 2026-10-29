@@ -5,6 +5,7 @@
 
 #include "cartridge.h"
 #include "bus.h"
+#include "CPU/cpu.h"
 
 using namespace std;
 int main(int argc, char* argv[]) {
@@ -23,11 +24,11 @@ int main(int argc, char* argv[]) {
     cout << "Title: " << cartridge.title() << "\n";
 
     Bus bus(cartridge);
-    cout << "Bus read at 0x0134: " << bus.read(0x0134) << "\n";
-
-    bus.write(0xC000, 0x42);
-    uint8_t result = bus.read(0xC000);
-    cout << hex << static_cast<int>(result) << "\n";
+    CPU cpu(bus);
+    cpu.reset();
+    while (true) {
+        cpu.step();
+    }
 
     return 0;
 }
