@@ -143,3 +143,31 @@ int CPU::step() {
     return cycles;
 }
 
+int CPU::execute(uint8_t op) {
+    uint8_t x = op >> 6;
+    uint8_t y = (op >> 3) & 7;
+    uint8_t z = op & 7;
+
+    switch (op) {
+        case 0x00: return 4;
+        case 0xF3:
+            IME = false;
+            ei_pending = false;
+            return 4;
+        case 0x76:
+            halted = true;
+            return 4;
+        case 0xC3:
+            PC = fetch16();
+            return 16;
+        case 0xFB:
+            ei_pending = true;
+            return 4;
+        case 0xCB: return 4 + execute_cb(fetch8());
+    }
+
+    cerr << "Unimplemented opcode 0x" << hex << int(op) << " at 0x" << (PC - 1) << "\n";
+    abort();
+}
+
+
